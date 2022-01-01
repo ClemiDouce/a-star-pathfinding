@@ -73,3 +73,10 @@ position = Vector2( 64, 64 )
 texture = ExtResource( 2 )
 centered = false
 script = ExtResource( 4 )
+
+[node name="Tween" type="Tween" parent="TileMap/Player"]
+
+[node name="Line2D" type="Line2D" parent="TileMap"]
+points = PoolVector2Array( 0, 0 )
+width = 5.0
+default_color = Color( 0.866667, 0.0823529, 0.933333, 1 )
