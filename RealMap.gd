@@ -20,12 +20,24 @@ func _input(event: InputEvent) -> void:
 				
 		# Placer obstacle
 		elif event.button_index == BUTTON_RIGHT:
-			var mouse_pos = world_to_map(get_global_mouse_position())
-			if used_cells.has(mouse_pos):
-				self.set_cellv(mouse_pos, 2)
-				self._remove_point(mouse_pos)
-				if player.path.size() > 0:
-					search_path(player.global_position, player.path[-1])
+			var mouse_pos = get_global_mouse_position()
+			if used_cells.has(world_to_map(mouse_pos)): # Check si case cliquée existe
+				if !player.moving:
+					var path = search_path(player.global_position, mouse_pos)
+					if path:
+						player.new_path(path, false)
+	#					self.set_cellv(path[-1], 1)
+						draw_path_line(path)
+						player.move()
+				else:
+					player.stop()
+					yield(player, "stopped")
+					var path = search_path(player.global_position, mouse_pos)
+					if path:
+						player.new_path(path, false)
+	#					self.set_cellv(path[-1], 1)
+						draw_path_line(path)
+						player.move()
 		
 		# Arreter le joueur
 		elif event.button_index == BUTTON_MIDDLE:
