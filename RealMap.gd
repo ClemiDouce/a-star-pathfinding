@@ -1,6 +1,6 @@
 extends Astar_Path
 
-onready var player := $Path2D
+onready var player := $Player
 
 func _ready() -> void:
 	player.map = self
@@ -10,8 +10,10 @@ func _input(event: InputEvent) -> void:
 		# Calculer chemin du personnage
 		if event.button_index == BUTTON_LEFT:
 			var mouse_pos = get_global_mouse_position()
-			if used_cells.has(world_to_map(mouse_pos)):
-				var path = search_path(player.sprite.global_position, mouse_pos)
+			if used_cells.has(world_to_map(mouse_pos)): # Check si case cliquée existe
+				var path = search_path(player.global_position, mouse_pos)
+				if path:
+					player.new_path(path)
 				
 		# Placer obstacle
 		elif event.button_index == BUTTON_RIGHT:
@@ -24,7 +26,7 @@ func _input(event: InputEvent) -> void:
 		
 		# Arreter le joueur
 		elif event.button_index == BUTTON_MIDDLE:
-			player.stop()
+			player.move()
 			
 func search_path(start: Vector2, end:Vector2) -> PoolVector2Array:
 	var new_start = world_to_map(start)
